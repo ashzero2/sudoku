@@ -1,6 +1,9 @@
 import type { CurrentGame } from '@/lib/game/types';
 
-export function elapsedMs(game: CurrentGame, now: number): number {
+export function elapsedMs(
+  game: Pick<CurrentGame, 'accumulatedMs' | 'resumedAt'>,
+  now: number,
+): number {
   if (game.resumedAt === null) return game.accumulatedMs;
   // The device clock can move backwards; never subtract time.
   return game.accumulatedMs + Math.max(0, now - game.resumedAt);

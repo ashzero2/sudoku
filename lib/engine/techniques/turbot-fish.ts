@@ -1,5 +1,6 @@
 import {
   BOARD_SIZE,
+  DIGITS,
   UNITS,
   boxOf,
   colOf,
@@ -11,8 +12,6 @@ import {
 import { cellsWithDigit } from '@/lib/engine/grid-state';
 import type { GridState, Step, Technique } from '@/lib/engine/types';
 import { eliminationStep, eliminationsFor } from '@/lib/engine/techniques/elimination';
-
-const DIGITS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 type UnitKind = 'row' | 'col' | 'box';
 

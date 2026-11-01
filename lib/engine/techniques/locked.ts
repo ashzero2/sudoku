@@ -1,9 +1,8 @@
-import { BOXES, COLS, ROWS, boxOf, colOf, digitBit, rowOf } from '@/lib/engine/grid';
+import { BOXES, COLS, DIGITS, ROWS, boxOf, colOf, digitBit, rowOf } from '@/lib/engine/grid';
 import { cellsWithDigit } from '@/lib/engine/grid-state';
 import type { GridState, Step } from '@/lib/engine/types';
 import { eliminationStep, eliminationsFor } from '@/lib/engine/techniques/elimination';
 
-const DIGITS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const LINES = [...ROWS, ...COLS];
 
 function sharedLine(cells: readonly number[]): readonly number[] | null {

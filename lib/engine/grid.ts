@@ -2,6 +2,7 @@ export const BOARD_SIZE = 9;
 export const BOX_SIZE = 3;
 export const CELL_COUNT = BOARD_SIZE * BOARD_SIZE;
 export const ALL_DIGITS = (1 << BOARD_SIZE) - 1;
+export const DIGITS: readonly number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 export function rowOf(cell: number): number {
   return Math.floor(cell / BOARD_SIZE);

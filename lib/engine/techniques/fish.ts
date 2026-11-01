@@ -1,10 +1,8 @@
-import { COLS, ROWS, colOf, digitBit, rowOf } from '@/lib/engine/grid';
+import { COLS, DIGITS, ROWS, colOf, digitBit, rowOf } from '@/lib/engine/grid';
 import { cellsWithDigit } from '@/lib/engine/grid-state';
 import type { GridState, Step, Technique } from '@/lib/engine/types';
 import { combinations } from '@/lib/engine/techniques/combinations';
 import { eliminationStep, eliminationsFor } from '@/lib/engine/techniques/elimination';
-
-const DIGITS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 const ORIENTATIONS = [
   { bases: ROWS, covers: COLS, baseIndexOf: rowOf, coverIndexOf: colOf },

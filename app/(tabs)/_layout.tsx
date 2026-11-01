@@ -22,7 +22,7 @@ export default function TabsLayout() {
         headerShown: false,
         tabBarActiveTintColor: theme.accent,
         tabBarInactiveTintColor: theme.textMuted,
-        tabBarStyle: { backgroundColor: theme.background, borderTopColor: theme.border },
+        tabBarStyle: { backgroundColor: theme.background, borderTopColor: theme.line },
         sceneStyle: { backgroundColor: theme.background },
       }}
     >

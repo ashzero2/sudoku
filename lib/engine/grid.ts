@@ -1,0 +1,69 @@
+export const BOARD_SIZE = 9;
+export const BOX_SIZE = 3;
+export const CELL_COUNT = BOARD_SIZE * BOARD_SIZE;
+export const ALL_DIGITS = (1 << BOARD_SIZE) - 1;
+
+function buildUnits(): number[][] {
+  const rows: number[][] = [];
+  const cols: number[][] = [];
+  const boxes: number[][] = [];
+  for (let i = 0; i < BOARD_SIZE; i++) {
+    rows.push([]);
+    cols.push([]);
+    boxes.push([]);
+  }
+
+  for (let cell = 0; cell < CELL_COUNT; cell++) {
+    const row = Math.floor(cell / BOARD_SIZE);
+    const col = cell % BOARD_SIZE;
+    const box = Math.floor(row / BOX_SIZE) * BOX_SIZE + Math.floor(col / BOX_SIZE);
+    rows[row].push(cell);
+    cols[col].push(cell);
+    boxes[box].push(cell);
+  }
+
+  return [...rows, ...cols, ...boxes];
+}
+
+function buildPeers(units: readonly (readonly number[])[]): number[][] {
+  const peers = Array.from({ length: CELL_COUNT }, () => new Set<number>());
+  for (const unit of units) {
+    for (const a of unit) {
+      for (const b of unit) {
+        if (a !== b) peers[a].add(b);
+      }
+    }
+  }
+  return peers.map((set) => [...set]);
+}
+
+function buildPopCounts(): Uint8Array {
+  const table = new Uint8Array(ALL_DIGITS + 1);
+  for (let mask = 1; mask <= ALL_DIGITS; mask++) {
+    table[mask] = table[mask >> 1] + (mask & 1);
+  }
+  return table;
+}
+
+/** The 27 units: 9 rows, then 9 columns, then 9 boxes, each as cell indices. */
+export const UNITS: readonly (readonly number[])[] = buildUnits();
+
+export const PEERS: readonly (readonly number[])[] = buildPeers(UNITS);
+
+const POP_COUNTS = buildPopCounts();
+
+export function digitBit(digit: number): number {
+  return 1 << (digit - 1);
+}
+
+export function bitDigit(bit: number): number {
+  return 32 - Math.clz32(bit);
+}
+
+export function popCount(mask: number): number {
+  return POP_COUNTS[mask];
+}
+
+export function isSingle(mask: number): boolean {
+  return mask !== 0 && (mask & (mask - 1)) === 0;
+}

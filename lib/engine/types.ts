@@ -4,6 +4,12 @@ export type Board = number[];
 
 export type Notes = number[];
 
+export interface BankPuzzle {
+  id: string;
+  puzzle: string;
+  se: number;
+}
+
 export type Technique =
   | 'full-house'
   | 'hidden-single'

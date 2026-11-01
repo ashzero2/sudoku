@@ -25,6 +25,7 @@
     "zustand": "^5.0.16"
   },
   "devDependencies": {
+    "@types/node": "^24.19.2",
     "@types/react": "~19.3.0",
     "eslint": "^9.39.5",
     "eslint-config-expo": "~58.0.4",
@@ -33,13 +34,14 @@
   },
   "scripts": {
     "start": "expo start --dev-client",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p scripts",
     "lint": "expo lint",
     "format": "prettier --write .",
     "build:dev": "JAVA_HOME=$(/usr/libexec/java_home -v 17) EAS_LOCAL_BUILD_ARTIFACTS_DIR=build npx --yes eas-cli@27.2.0 build --platform android --profile development --local",
     "build:e2e": "JAVA_HOME=$(/usr/libexec/java_home -v 17) EAS_LOCAL_BUILD_ARTIFACTS_DIR=build npx --yes eas-cli@27.2.0 build --platform android --profile e2e --local",
     "build:preview": "JAVA_HOME=$(/usr/libexec/java_home -v 17) EAS_LOCAL_BUILD_ARTIFACTS_DIR=build npx --yes eas-cli@27.2.0 build --platform android --profile preview --local",
-    "e2e": "JAVA_HOME=$(/usr/libexec/java_home -v 17) $HOME/.maestro/bin/maestro test"
+    "e2e": "JAVA_HOME=$(/usr/libexec/java_home -v 17) $HOME/.maestro/bin/maestro test",
+    "build:bank": "npx --yes tsx@4.23.15 scripts/build-bank.ts"
   },
   "private": true
 }

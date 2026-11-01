@@ -89,7 +89,14 @@ export default function SettingsScreen() {
 
         <SectionTitle title="Gameplay" />
         {TOGGLES.map(({ key, testID, label, description }) => (
-          <View key={key} style={[styles.toggleRow, { borderBottomColor: theme.line }]}>
+          // The whole row toggles, so the target is larger than the switch itself; the switch
+          // stays the one control a screen reader announces.
+          <Pressable
+            key={key}
+            accessible={false}
+            onPress={() => update({ [key]: !settings[key] })}
+            style={[styles.toggleRow, { borderBottomColor: theme.line }]}
+          >
             <View style={styles.toggleText}>
               <Text maxFontSizeMultiplier={1.3} style={[styles.toggleLabel, { color: theme.text }]}>
                 {label}
@@ -106,7 +113,7 @@ export default function SettingsScreen() {
               trackColor={{ false: theme.line, true: theme.accent }}
               thumbColor={theme.background}
             />
-          </View>
+          </Pressable>
         ))}
 
         <SectionTitle title="About" />

@@ -2,7 +2,7 @@ import { Modal, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '@/components/Button';
 import { useTheme } from '@/hooks/useTheme';
-import { formatDuration } from '@/lib/game/format';
+import { formatDuration, spokenDuration } from '@/lib/game/format';
 import { DIFFICULTY_LABELS } from '@/lib/game/labels';
 import { useGameStore } from '@/stores/gameStore';
 import { radius, spacing } from '@/theme/tokens';
@@ -15,7 +15,12 @@ export function CompletionModal({ onNewGame }: { onNewGame: () => void }) {
   if (!completion) return null;
 
   const rows = [
-    { id: 'time', label: 'Time', value: formatDuration(completion.elapsedMs) },
+    {
+      id: 'time',
+      label: 'Time',
+      value: formatDuration(completion.elapsedMs),
+      spoken: spokenDuration(completion.elapsedMs),
+    },
     { id: 'mistakes', label: 'Mistakes', value: String(completion.mistakes) },
     { id: 'hints', label: 'Hints', value: String(completion.hintsUsed) },
   ];
@@ -43,8 +48,13 @@ export function CompletionModal({ onNewGame }: { onNewGame: () => void }) {
               New best time
             </Text>
           )}
-          {rows.map(({ id, label, value }) => (
-            <View key={id} style={styles.row} accessible accessibilityLabel={`${label}: ${value}`}>
+          {rows.map(({ id, label, value, spoken }) => (
+            <View
+              key={id}
+              style={styles.row}
+              accessible
+              accessibilityLabel={`${label}: ${spoken ?? value}`}
+            >
               <Text style={[styles.rowLabel, { color: theme.textMuted }]}>{label}</Text>
               <Text testID={`completion-${id}`} style={[styles.rowValue, { color: theme.text }]}>
                 {value}

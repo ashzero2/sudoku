@@ -1,0 +1,50 @@
+appId: com.cleansudoku.app
+env:
+  PUZZLE: '004000800009127500070060010000985000007000100080030090000502000100000007060000040'
+  STALLED: '238645917600020835750030246800300564063050721500006389076080102180060403005090678'
+---
+- runFlow:
+    file: shared/start-puzzle.yml
+    env:
+      PUZZLE: ${PUZZLE}
+
+# Tier 1 highlights the cell, tier 2 names the technique, tier 3 fills in the digit.
+- tapOn:
+    id: tool-hint
+- assertVisible:
+    id: hint-banner
+- assertVisible: 'Row 1, column 2, empty, hinted'
+- assertVisible: 'Look at the highlighted cells.*'
+- tapOn:
+    id: tool-hint
+- assertVisible: 'Hidden single.*1 can only go in the highlighted cell.*'
+- tapOn:
+    id: tool-hint
+- assertVisible: 'Row 1, column 2, entered 1'
+- assertNotVisible:
+    id: hint-banner
+
+# A wrong entry is flagged before any technique.
+- tapOn:
+    id: cell-0
+- tapOn:
+    id: digit-2
+- tapOn:
+    id: tool-hint
+- assertVisible: 'One of your entries is wrong.*'
+- assertVisible: 'Row 1, column 1, incorrect 2, hinted'
+
+# When the techniques run out, the hint falls back to the easiest cell.
+- runFlow:
+    file: shared/start-puzzle.yml
+    env:
+      PUZZLE: ${STALLED}
+- tapOn:
+    id: tool-hint
+- assertVisible: 'Row 3, column 3, empty, hinted'
+- tapOn:
+    id: tool-hint
+- assertVisible: 'This one needs an advanced technique.*'
+- tapOn:
+    id: tool-hint
+- assertVisible: 'Row 3, column 3, entered 1'

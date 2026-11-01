@@ -11,6 +11,13 @@ export type HintState =
   | { kind: 'technique'; steps: Step[]; placement: Placement; tier: HintTier }
   | { kind: 'fallback'; placement: Placement; tier: HintTier };
 
+/** The cells to highlight for a hint. */
+export function hintCells(hint: HintState): readonly number[] {
+  if (hint.kind === 'mistake') return [hint.cell];
+  if (hint.kind === 'fallback') return [hint.placement.cell];
+  return hint.steps[0].cells;
+}
+
 function fewestCandidatesCell(game: CurrentGame): number {
   const { values, candidates } = createState(game.board);
   let best = -1;

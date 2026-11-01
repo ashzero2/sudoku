@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 
 import { useTheme } from '@/hooks/useTheme';
-import { formatDuration } from '@/lib/game/format';
+import { formatDuration, spokenDuration } from '@/lib/game/format';
 import { elapsedMs } from '@/lib/game/timer';
 import { useGameStore } from '@/stores/gameStore';
 
@@ -20,14 +20,17 @@ export function Timer() {
     return () => clearInterval(id);
   }, [resumedAt]);
 
+  const elapsed = elapsedMs({ accumulatedMs, resumedAt }, now);
+
   return (
     <Text
       testID="timer"
       accessibilityRole="timer"
+      accessibilityLabel={`Elapsed time ${spokenDuration(elapsed)}`}
       maxFontSizeMultiplier={1.3}
       style={[styles.time, { color: theme.text }]}
     >
-      {formatDuration(elapsedMs({ accumulatedMs, resumedAt }, now))}
+      {formatDuration(elapsed)}
     </Text>
   );
 }

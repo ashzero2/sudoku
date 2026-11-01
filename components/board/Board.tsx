@@ -3,6 +3,7 @@ import { StyleSheet, View, useWindowDimensions } from 'react-native';
 import { BOX_LINE, Cell } from '@/components/board/Cell';
 import { useTheme } from '@/hooks/useTheme';
 import { BOARD_SIZE, sees } from '@/lib/engine/grid';
+import { hintCells } from '@/lib/game/hints';
 import { useGameStore } from '@/stores/gameStore';
 import { useSettingsStore } from '@/stores/settingsStore';
 import { spacing } from '@/theme/tokens';
@@ -21,8 +22,11 @@ export function Board() {
   const selectedCell = useGameStore((state) => state.game?.selectedCell ?? null);
   const selectCell = useGameStore((state) => state.selectCell);
   const showMistakes = useSettingsStore((state) => state.settings.showMistakes);
+  const hint = useGameStore((state) => state.hint);
 
   if (!board || !notes || !givens || !solution) return null;
+
+  const hintedCells = hint ? hintCells(hint) : [];
 
   // Whole-pixel cells keep the grid lines crisp; the outer frame takes the remainder.
   const available = Math.min(width - 2 * spacing.md, MAX_BOARD_WIDTH);
@@ -50,6 +54,7 @@ export function Board() {
                 isConflict={
                   showMistakes && value !== 0 && givens[index] === 0 && value !== solution[index]
                 }
+                isHinted={hintedCells.includes(index)}
                 size={cellSize}
                 theme={theme}
                 onSelect={selectCell}

@@ -30,6 +30,7 @@ export default function TabsLayout() {
         name="index"
         options={{
           title: 'Game',
+          tabBarAccessibilityLabel: 'Game',
           tabBarButtonTestID: 'tab-game',
           tabBarIcon: tabIcon('grid-outline', theme),
         }}
@@ -38,6 +39,7 @@ export default function TabsLayout() {
         name="stats"
         options={{
           title: 'Stats',
+          tabBarAccessibilityLabel: 'Stats',
           tabBarButtonTestID: 'tab-stats',
           tabBarIcon: tabIcon('stats-chart-outline', theme),
         }}
@@ -46,6 +48,7 @@ export default function TabsLayout() {
         name="settings"
         options={{
           title: 'Settings',
+          tabBarAccessibilityLabel: 'Settings',
           tabBarButtonTestID: 'tab-settings',
           tabBarIcon: tabIcon('settings-outline', theme),
         }}

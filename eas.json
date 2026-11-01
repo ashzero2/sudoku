@@ -1,0 +1,23 @@
+{
+  "cli": {
+    "version": "27.2.0",
+    "appVersionSource": "local"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "android": { "buildType": "apk" }
+    },
+    "e2e": {
+      "distribution": "internal",
+      "withoutCredentials": true,
+      "env": { "EXPO_PUBLIC_E2E": "1" },
+      "android": { "buildType": "apk" }
+    },
+    "preview": {
+      "distribution": "internal",
+      "android": { "buildType": "apk" }
+    }
+  }
+}

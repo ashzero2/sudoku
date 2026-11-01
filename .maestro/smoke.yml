@@ -1,0 +1,18 @@
+appId: com.cleansudoku.app
+---
+- launchApp:
+    clearState: true
+- assertVisible:
+    id: screen-game
+- tapOn:
+    id: tab-stats
+- assertVisible:
+    id: screen-stats
+- tapOn:
+    id: tab-settings
+- assertVisible:
+    id: screen-settings
+- tapOn:
+    id: tab-game
+- assertVisible:
+    id: screen-game

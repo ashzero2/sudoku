@@ -1,0 +1,47 @@
+# Dependencies
+node_modules/
+
+# Expo and Metro
+.expo/
+dist/
+expo-env.d.ts
+.metro-health-check*
+
+# Generated native projects (continuous native generation)
+/android
+/ios
+.kotlin/
+
+# Local EAS builds
+build/
+*.apk
+*.aab
+
+# Signing and secrets
+credentials.json
+*.jks
+*.keystore
+*.p8
+*.p12
+*.pem
+*.key
+*.mobileprovision
+.env*.local
+
+# Local planning docs
+plans/
+
+# Local agent instructions and settings
+AGENTS.md
+CLAUDE.md
+CLAUDE.local.md
+.claude/settings.local.json
+
+# TypeScript and logs
+*.tsbuildinfo
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# OS
+.DS_Store

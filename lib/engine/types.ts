@@ -1,4 +1,6 @@
-export type Difficulty = 'very-easy' | 'easy' | 'medium' | 'hard' | 'expert' | 'extreme';
+export const DIFFICULTIES = ['very-easy', 'easy', 'medium', 'hard', 'expert', 'extreme'] as const;
+
+export type Difficulty = (typeof DIFFICULTIES)[number];
 
 export type Board = number[];
 

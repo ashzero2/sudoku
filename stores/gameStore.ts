@@ -4,7 +4,7 @@ import { persist } from 'zustand/middleware';
 import { loadLevel, pickPuzzle } from '@/lib/engine/bank';
 import { createRng } from '@/lib/engine/rng';
 import { solve } from '@/lib/engine/solver';
-import type { Difficulty } from '@/lib/engine/types';
+import type { Board, Difficulty } from '@/lib/engine/types';
 import { createHint, type HintState } from '@/lib/game/hints';
 import { erase, fillDigit, isSolved, redo, revealDigit, undo } from '@/lib/game/moves';
 import { dateKey } from '@/lib/game/streak';
@@ -23,6 +23,8 @@ interface GameState {
   /** The result of the game that just ended, until the player dismisses it. */
   completion: CompletionSummary | null;
   startGame: (difficulty: Difficulty) => void;
+  /** Starts a specific puzzle instead of one from the bank. */
+  startPuzzle: (difficulty: Difficulty, puzzleId: string, givens: Board) => void;
   selectCell: (cell: number) => void;
   toggleNotesMode: () => void;
   fillDigit: (digit: number) => void;
@@ -81,6 +83,40 @@ export const useGameStore = create<GameState>()(
         if (isSolved(next)) finish(next);
       }
 
+      function begin(
+        difficulty: Difficulty,
+        puzzleId: string,
+        givens: Board,
+        now: number,
+      ): boolean {
+        const solution = solve(givens);
+        if (!solution) return false;
+
+        useStatsStore.getState().recordStart(difficulty);
+        set({
+          game: {
+            puzzleId,
+            difficulty,
+            givens,
+            solution,
+            board: [...givens],
+            notes: givens.map(() => 0),
+            history: [],
+            redo: [],
+            selectedCell: null,
+            notesMode: false,
+            mistakes: 0,
+            hintsUsed: 0,
+            accumulatedMs: 0,
+            resumedAt: now,
+            startedAt: now,
+          },
+          hint: null,
+          completion: null,
+        });
+        return true;
+      }
+
       function updateGame(transform: (game: CurrentGame) => CurrentGame): void {
         const { game } = get();
         if (game) set({ game: transform(game) });
@@ -99,33 +135,12 @@ export const useGameStore = create<GameState>()(
             bank.played[difficulty] ?? {},
             createRng(now),
           );
-          const givens = [...pick.puzzle].map(Number);
-          const solution = solve(givens);
-          if (!solution) return;
+          const started = begin(difficulty, pick.id, [...pick.puzzle].map(Number), now);
+          if (started) bank.markPlayed(difficulty, pick.id, now);
+        },
 
-          bank.markPlayed(difficulty, pick.id, now);
-          useStatsStore.getState().recordStart(difficulty);
-          set({
-            game: {
-              puzzleId: pick.id,
-              difficulty,
-              givens,
-              solution,
-              board: givens,
-              notes: givens.map(() => 0),
-              history: [],
-              redo: [],
-              selectedCell: null,
-              notesMode: false,
-              mistakes: 0,
-              hintsUsed: 0,
-              accumulatedMs: 0,
-              resumedAt: now,
-              startedAt: now,
-            },
-            hint: null,
-            completion: null,
-          });
+        startPuzzle: (difficulty, puzzleId, givens) => {
+          begin(difficulty, puzzleId, givens, Date.now());
         },
 
         selectCell: (cell) => updateGame((game) => ({ ...game, selectedCell: cell })),

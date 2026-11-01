@@ -18,6 +18,10 @@ export interface ThemeTokens {
   line: string;
   box: string;
   accent: string;
+  /** Text drawn on `accent`. */
+  onAccent: string;
+  /** Dims the screen behind a sheet or dialog. */
+  scrim: string;
 }
 
 // Every text-on-fill pair a cell can show is at least 4.5:1, and the accent ring at least 3:1.
@@ -37,6 +41,8 @@ export const lightTokens: ThemeTokens = {
   line: '#C5CBD0',
   box: '#212121',
   accent: '#0D5DB8',
+  onAccent: '#FFFFFF',
+  scrim: '#00000066',
 };
 
 export const darkTokens: ThemeTokens = {
@@ -55,6 +61,8 @@ export const darkTokens: ThemeTokens = {
   line: '#3A4046',
   box: '#8A9298',
   accent: '#7DBBF5',
+  onAccent: '#121212',
+  scrim: '#000000B3',
 };
 
 export const spacing = { xs: 4, sm: 8, md: 16, lg: 24 } as const;

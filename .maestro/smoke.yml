@@ -2,6 +2,12 @@ appId: com.cleansudoku.app
 ---
 - launchApp:
     clearState: true
+
+# With no game to resume, the New game sheet opens over the Game tab.
+- assertVisible:
+    id: new-game-sheet
+- tapOn:
+    id: new-game-cancel
 - assertVisible:
     id: screen-game
 - tapOn:

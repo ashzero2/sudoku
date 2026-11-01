@@ -1,0 +1,51 @@
+appId: com.cleansudoku.app
+env:
+  PUZZLE: '004000800009127500070060010000985000007000100080030090000502000100000007060000040'
+---
+- runFlow:
+    file: shared/start-puzzle.yml
+    env:
+      PUZZLE: ${PUZZLE}
+- assertVisible: 'Row 1, column 1, empty'
+
+# Notes: toggle digits in two cells.
+- tapOn:
+    id: tool-notes
+- tapOn:
+    id: cell-1
+- tapOn:
+    id: digit-6
+- tapOn:
+    id: digit-7
+- assertVisible: 'Row 1, column 2, notes 6, 7'
+- tapOn:
+    id: cell-16
+- tapOn:
+    id: digit-1
+- tapOn:
+    id: digit-4
+- assertVisible: 'Row 2, column 8, notes 1, 4'
+- tapOn:
+    id: digit-1
+- assertVisible: 'Row 2, column 8, notes 4'
+- tapOn:
+    id: tool-notes
+
+# A correct entry removes that digit from the notes of cells in its row.
+- tapOn:
+    id: cell-0
+- tapOn:
+    id: digit-6
+- assertVisible: 'Row 1, column 1, entered 6'
+- assertVisible: 'Row 1, column 2, notes 7'
+- assertVisible: 'Row 2, column 8, notes 4'
+
+# A wrong entry is flagged (Show mistakes is on by default), and Erase clears it.
+- tapOn:
+    id: cell-1
+- tapOn:
+    id: digit-2
+- assertVisible: 'Row 1, column 2, incorrect 2'
+- tapOn:
+    id: tool-erase
+- assertVisible: 'Row 1, column 2, empty'

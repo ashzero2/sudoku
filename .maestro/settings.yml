@@ -1,0 +1,50 @@
+appId: com.cleansudoku.app
+env:
+  PUZZLE: '004000800009127500070060010000985000007000100080030090000502000100000007060000040'
+---
+- launchApp:
+    clearState: true
+- tapOn:
+    id: new-game-cancel
+- tapOn:
+    id: tab-settings
+- assertVisible:
+    id: theme-system
+    selected: true
+- tapOn:
+    id: theme-dark
+- assertVisible:
+    id: theme-dark
+    selected: true
+- assertVisible:
+    id: setting-show-mistakes
+    checked: true
+- tapOn:
+    id: setting-show-mistakes
+- assertVisible:
+    id: setting-show-mistakes
+    checked: false
+
+# Settings survive a restart.
+- stopApp
+- launchApp
+- tapOn:
+    id: new-game-cancel
+- tapOn:
+    id: tab-settings
+- assertVisible:
+    id: theme-dark
+    selected: true
+- assertVisible:
+    id: setting-show-mistakes
+    checked: false
+
+# With Show mistakes off, a wrong entry is not flagged.
+- openLink: sudoku://e2e/start?puzzle=${PUZZLE}&difficulty=very-easy
+- assertVisible:
+    id: board
+- tapOn:
+    id: cell-0
+- tapOn:
+    id: digit-2
+- assertVisible: 'Row 1, column 1, entered 2'

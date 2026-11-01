@@ -1,0 +1,37 @@
+appId: com.cleansudoku.app
+env:
+  PUZZLE: '004000800009127500070060010000985000007000100080030090000502000100000007060000040'
+---
+- runFlow:
+    file: shared/start-puzzle.yml
+    env:
+      PUZZLE: ${PUZZLE}
+- tapOn:
+    id: cell-0
+- tapOn:
+    id: digit-6
+- tapOn:
+    id: tool-notes
+- tapOn:
+    id: cell-16
+- tapOn:
+    id: digit-4
+- tapOn:
+    id: tool-notes
+
+# Kill the app and start it again without clearing its data.
+- stopApp
+- launchApp
+
+# A saved game comes back paused, with the board hidden.
+- assertVisible:
+    id: pause-overlay
+- assertNotVisible:
+    id: board
+- tapOn:
+    id: resume-button
+- assertVisible: 'Row 1, column 1, entered 6'
+- assertVisible: 'Row 2, column 8, notes 4'
+- assertVisible:
+    id: tool-undo
+    enabled: true

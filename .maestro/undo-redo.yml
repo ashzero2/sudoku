@@ -1,0 +1,53 @@
+appId: com.cleansudoku.app
+env:
+  PUZZLE: '004000800009127500070060010000985000007000100080030090000502000100000007060000040'
+---
+- runFlow:
+    file: shared/start-puzzle.yml
+    env:
+      PUZZLE: ${PUZZLE}
+- tapOn:
+    id: tool-notes
+- tapOn:
+    id: cell-1
+- tapOn:
+    id: digit-6
+- tapOn:
+    id: digit-7
+- tapOn:
+    id: tool-notes
+- tapOn:
+    id: cell-0
+- tapOn:
+    id: digit-6
+- assertVisible: 'Row 1, column 1, entered 6'
+- assertVisible: 'Row 1, column 2, notes 7'
+
+# Undo restores the value and the note the entry removed.
+- tapOn:
+    id: tool-undo
+- assertVisible: 'Row 1, column 1, empty'
+- assertVisible: 'Row 1, column 2, notes 6, 7'
+- assertVisible:
+    id: tool-redo
+    enabled: true
+
+- tapOn:
+    id: tool-redo
+- assertVisible: 'Row 1, column 1, entered 6'
+- assertVisible: 'Row 1, column 2, notes 7'
+
+# A new move after an undo discards the redo history.
+- tapOn:
+    id: tool-undo
+- tapOn:
+    id: cell-16
+- tapOn:
+    id: digit-6
+- assertVisible: 'Row 2, column 8, entered 6'
+- assertVisible:
+    id: tool-redo
+    enabled: false
+- assertVisible:
+    id: tool-undo
+    enabled: true

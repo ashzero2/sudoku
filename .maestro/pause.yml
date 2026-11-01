@@ -1,0 +1,33 @@
+appId: com.cleansudoku.app
+env:
+  PUZZLE: '004000800009127500070060010000985000007000100080030090000502000100000007060000040'
+---
+- runFlow:
+    file: shared/start-puzzle.yml
+    env:
+      PUZZLE: ${PUZZLE}
+- tapOn:
+    id: pause-button
+- assertVisible:
+    id: pause-overlay
+- assertNotVisible:
+    id: board
+- tapOn:
+    id: resume-button
+- assertVisible:
+    id: board
+- assertNotVisible:
+    id: pause-overlay
+
+# Leaving the app pauses it; coming back shows the overlay.
+- pressKey: home
+- launchApp:
+    stopApp: false
+- assertVisible:
+    id: pause-overlay
+- assertNotVisible:
+    id: board
+- tapOn:
+    id: resume-button
+- assertVisible:
+    id: board

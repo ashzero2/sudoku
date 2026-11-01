@@ -2,9 +2,13 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 
 import { useApplyThemeSetting } from '@/hooks/useApplyThemeSetting';
+import { useAppPause } from '@/hooks/useAppPause';
+import { useWarmBank } from '@/hooks/useWarmBank';
 
 export default function RootLayout() {
   useApplyThemeSetting();
+  useAppPause();
+  useWarmBank();
 
   return (
     <>

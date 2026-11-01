@@ -1,0 +1,33 @@
+appId: com.cleansudoku.app
+env:
+  PUZZLE: '614359872839127564572468913341985726957246138286731495493572681128694357765813240'
+---
+- runFlow:
+    file: shared/start-puzzle.yml
+    env:
+      PUZZLE: ${PUZZLE}
+
+# A clean solve, then start another game from the dialog.
+- tapOn:
+    id: cell-80
+- tapOn:
+    id: digit-9
+- assertVisible:
+    id: completion-modal
+- assertVisible:
+    id: completion-new-best
+- assertVisible:
+    id: completion-mistakes
+    text: '0'
+- tapOn:
+    id: completion-new-game
+- assertVisible:
+    id: new-game-sheet
+- assertVisible: 'Very easy.*Best [0-9]+:[0-9]{2}'
+- tapOn:
+    id: difficulty-easy
+- assertVisible:
+    id: board
+- assertVisible:
+    id: difficulty-label
+    text: 'Easy'

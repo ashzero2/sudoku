@@ -1,22 +1,34 @@
+import type { StyleProp, TextStyle } from 'react-native';
 import { StyleSheet, Text } from 'react-native';
 
 import { useTheme } from '@/hooks/useTheme';
-import { spacing } from '@/theme/tokens';
+import { MAX_FONT_SCALE, spacing, type, weight } from '@/theme/tokens';
 
-export function SectionTitle({ title }: { title: string }) {
+interface SectionTitleProps {
+  title: string;
+  style?: StyleProp<TextStyle>;
+}
+
+export function SectionTitle({ title, style }: SectionTitleProps) {
   const theme = useTheme();
 
   return (
     <Text
       accessibilityRole="header"
-      maxFontSizeMultiplier={1.3}
-      style={[styles.title, { color: theme.textMuted }]}
+      maxFontSizeMultiplier={MAX_FONT_SCALE}
+      style={[styles.title, { color: theme.textMuted }, style]}
     >
-      {title}
+      {title.toUpperCase()}
     </Text>
   );
 }
 
 const styles = StyleSheet.create({
-  title: { fontSize: 14, fontWeight: '600', marginTop: spacing.lg, marginBottom: spacing.sm },
+  title: {
+    fontSize: type.micro,
+    fontWeight: weight.bold,
+    letterSpacing: 1.2,
+    marginTop: spacing.lg,
+    marginBottom: spacing.sm,
+  },
 });

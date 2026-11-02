@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Button } from '@/components/Button';
 import { useTheme } from '@/hooks/useTheme';
 import { useGameStore } from '@/stores/gameStore';
-import { radius, spacing } from '@/theme/tokens';
+import { border, MAX_FONT_SCALE, radius, spacing, type, weight } from '@/theme/tokens';
 
 /** Stands in for the board while the clock is stopped, so a paused puzzle cannot be studied. */
 export function PauseOverlay() {
@@ -15,10 +15,13 @@ export function PauseOverlay() {
       testID="pause-overlay"
       style={[styles.overlay, { backgroundColor: theme.surface, borderColor: theme.line }]}
     >
-      <Text maxFontSizeMultiplier={1.3} style={[styles.title, { color: theme.text }]}>
+      <Text maxFontSizeMultiplier={MAX_FONT_SCALE} style={[styles.title, { color: theme.text }]}>
         Paused
       </Text>
-      <Text maxFontSizeMultiplier={1.3} style={[styles.hint, { color: theme.textMuted }]}>
+      <Text
+        maxFontSizeMultiplier={MAX_FONT_SCALE}
+        style={[styles.hint, { color: theme.textMuted }]}
+      >
         The board is hidden while the clock is stopped.
       </Text>
       <Button testID="resume-button" label="Resume" variant="primary" onPress={resume} />
@@ -33,9 +36,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: spacing.md,
     padding: spacing.lg,
-    borderWidth: 1,
+    borderWidth: border.hairline,
     borderRadius: radius.md,
   },
-  title: { fontSize: 24, fontWeight: '600' },
-  hint: { fontSize: 16, textAlign: 'center' },
+  title: { fontSize: type.title, fontWeight: weight.semibold },
+  hint: { fontSize: type.body, textAlign: 'center' },
 });

@@ -3,9 +3,8 @@ import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-na
 import { useTheme } from '@/hooks/useTheme';
 import { BOARD_SIZE, DIGITS } from '@/lib/engine/grid';
 import { useGameStore } from '@/stores/gameStore';
-import { MIN_TARGET, radius, spacing } from '@/theme/tokens';
+import { MAX_CONTENT_WIDTH, MIN_TARGET, radius, spacing, type, weight } from '@/theme/tokens';
 
-const MAX_WIDTH = 480;
 const NARROW_COLUMNS = 5;
 const BUTTON_HEIGHT = 52;
 
@@ -21,7 +20,7 @@ export function NumberPad() {
   const board = useGameStore((state) => state.game?.board);
   const fillDigit = useGameStore((state) => state.fillDigit);
 
-  const rowWidth = Math.min(width - 2 * spacing.md, MAX_WIDTH);
+  const rowWidth = Math.min(width - 2 * spacing.md, MAX_CONTENT_WIDTH);
   // One row when every button can stay at least MIN_TARGET wide, otherwise two.
   const columns = rowWidth >= MIN_TARGET * DIGITS.length ? DIGITS.length : NARROW_COLUMNS;
   const buttonWidth = Math.floor(rowWidth / columns);
@@ -74,5 +73,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  digit: { fontSize: 26, fontWeight: '500', fontVariant: ['tabular-nums'] },
+  digit: {
+    fontSize: type.digit,
+    fontWeight: weight.medium,
+    fontVariant: ['tabular-nums'],
+  },
 });

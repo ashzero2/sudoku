@@ -65,8 +65,42 @@ export const darkTokens: ThemeTokens = {
   scrim: '#000000B3',
 };
 
-export const spacing = { xs: 4, sm: 8, md: 16, lg: 24 } as const;
+export const type = {
+  mark: 42,
+  display: 32,
+  title: 24,
+  heading: 20,
+  body: 16,
+  label: 14,
+  small: 13,
+  micro: 11,
+  digit: 26,
+} as const;
 
-export const radius = { sm: 4, md: 8 } as const;
+export const weight = {
+  regular: '400',
+  medium: '500',
+  semibold: '600',
+  bold: '700',
+  heavy: '800',
+} as const;
+
+export const lineHeight = { micro: 14, small: 18, body: 22, title: 28 } as const;
+
+export const border = { hairline: 1, control: 2 } as const;
+
+export const icon = { sm: 18, md: 24 } as const;
+
+export const opacity = { pressed: 0.8, disabled: 0.45 } as const;
+
+export const spacing = { xxs: 2, xs: 4, sm: 8, md: 16, lg: 24, xl: 32 } as const;
+
+export const radius = { sm: 4, md: 8, lg: 12 } as const;
 
 export const MIN_TARGET = 44;
+
+export const MAX_CONTENT_WIDTH = 480;
+
+export const MAX_FONT_SCALE = 1.3;
+
+export const MESSAGE_SLOT_HEIGHT = 64;

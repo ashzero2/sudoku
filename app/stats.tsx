@@ -1,9 +1,11 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useRouter } from 'expo-router';
+import { StyleSheet, View } from 'react-native';
 
 import { SectionTitle } from '@/components/SectionTitle';
 import { StatsCard } from '@/components/StatsCard';
-import { useTheme } from '@/hooks/useTheme';
+import { Screen } from '@/components/ui/Screen';
+import { ScreenHeader } from '@/components/ui/ScreenHeader';
+import { ValueRow } from '@/components/ui/ValueRow';
 import { DIFFICULTIES } from '@/lib/engine/types';
 import { formatDuration } from '@/lib/game/format';
 import { DIFFICULTY_LABELS } from '@/lib/game/labels';
@@ -14,7 +16,7 @@ import { spacing } from '@/theme/tokens';
 const NONE = '—';
 
 export default function StatsScreen() {
-  const theme = useTheme();
+  const router = useRouter();
   const stats = useStatsStore((state) => state.stats);
 
   const { gamesStarted, gamesCompleted } = stats;
@@ -41,16 +43,12 @@ export default function StatsScreen() {
     cards.slice(row * 2, row * 2 + 2),
   );
 
+  const goBack = () => (router.canGoBack() ? router.back() : router.replace('/'));
+
   return (
-    <SafeAreaView
-      testID="screen-stats"
-      edges={['top']}
-      style={[styles.screen, { backgroundColor: theme.background }]}
-    >
-      <ScrollView contentContainerStyle={styles.content}>
-        <Text accessibilityRole="header" style={[styles.title, { color: theme.text }]}>
-          Stats
-        </Text>
+    <Screen testID="screen-stats" scroll>
+      <ScreenHeader title="Stats" onBack={goBack} />
+      <View style={styles.body}>
         <View style={styles.cards}>
           {rows.map((row) => (
             <View key={row[0].id} style={styles.cardRow}>
@@ -60,42 +58,30 @@ export default function StatsScreen() {
             </View>
           ))}
         </View>
-        <SectionTitle title="Best times (no hints)" />
-        {DIFFICULTIES.map((difficulty) => {
-          const best = stats.bestTimesMs[difficulty];
-          const value = best === null ? NONE : formatDuration(best);
-          return (
-            <View
-              key={difficulty}
-              testID={`best-time-${difficulty}`}
-              accessible
-              accessibilityLabel={`${DIFFICULTY_LABELS[difficulty]} best time: ${value}`}
-              style={[styles.bestRow, { borderBottomColor: theme.line }]}
-            >
-              <Text style={[styles.bestLabel, { color: theme.text }]}>
-                {DIFFICULTY_LABELS[difficulty]}
-              </Text>
-              <Text style={[styles.bestValue, { color: theme.text }]}>{value}</Text>
-            </View>
-          );
-        })}
-      </ScrollView>
-    </SafeAreaView>
+        <View>
+          <SectionTitle title="Best times (no hints)" style={styles.section} />
+          {DIFFICULTIES.map((difficulty) => {
+            const best = stats.bestTimesMs[difficulty];
+            const value = best === null ? NONE : formatDuration(best);
+            return (
+              <ValueRow
+                key={difficulty}
+                testID={`best-time-${difficulty}`}
+                label={DIFFICULTY_LABELS[difficulty]}
+                value={value}
+                accessibilityLabel={`${DIFFICULTY_LABELS[difficulty]} best time: ${value}`}
+              />
+            );
+          })}
+        </View>
+      </View>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1 },
-  content: { padding: spacing.md },
-  title: { fontSize: 24, fontWeight: '600', marginBottom: spacing.md },
+  body: { marginTop: spacing.lg, gap: spacing.md },
   cards: { gap: spacing.sm },
   cardRow: { flexDirection: 'row', gap: spacing.sm },
-  bestRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: spacing.sm,
-    borderBottomWidth: 1,
-  },
-  bestLabel: { fontSize: 16 },
-  bestValue: { fontSize: 16, fontVariant: ['tabular-nums'] },
+  section: { marginTop: 0 },
 });

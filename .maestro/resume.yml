@@ -23,13 +23,21 @@ env:
 - stopApp
 - launchApp
 
-# A saved game comes back paused, with the board hidden.
+# A cold launch lands on Home; the saved game is behind Continue.
 - assertVisible:
-    id: pause-overlay
+    id: screen-home
+- assertVisible:
+    id: continue-card
 - assertNotVisible:
     id: board
+
+# Continue starts the clock and restores the board, notes and history.
 - tapOn:
-    id: resume-button
+    id: continue-card
+- assertVisible:
+    id: board
+- assertNotVisible:
+    id: pause-overlay
 - assertVisible: 'Row 1, column 1, entered 6'
 - assertVisible: 'Row 2, column 8, notes 4'
 - assertVisible:

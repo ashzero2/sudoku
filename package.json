@@ -41,7 +41,8 @@
     "build:e2e": "JAVA_HOME=$(/usr/libexec/java_home -v 17) EAS_LOCAL_BUILD_ARTIFACTS_DIR=build npx --yes eas-cli@27.2.0 build --platform android --profile e2e --local",
     "build:preview": "JAVA_HOME=$(/usr/libexec/java_home -v 17) EAS_LOCAL_BUILD_ARTIFACTS_DIR=build npx --yes eas-cli@27.2.0 build --platform android --profile preview --local",
     "e2e": "JAVA_HOME=$(/usr/libexec/java_home -v 17) $HOME/.maestro/bin/maestro test",
-    "build:bank": "npx --yes tsx@4.23.15 scripts/build-bank.ts"
+    "build:bank": "npx --yes tsx@4.23.15 scripts/build-bank.ts",
+    "build:preview-arm64": "JAVA_HOME=$(/usr/libexec/java_home -v 17) EAS_LOCAL_BUILD_ARTIFACTS_DIR=build npx --yes eas-cli@27.2.0 build --platform android --profile preview-arm64 --local"
   },
   "private": true
 }

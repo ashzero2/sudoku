@@ -3,22 +3,30 @@ appId: com.cleansudoku.app
 - launchApp:
     clearState: true
 
-# With no game to resume, the New game sheet opens over the Game tab.
+# No game yet: the home hub is the entry point, with no Continue card.
 - assertVisible:
-    id: new-game-sheet
-- tapOn:
-    id: new-game-cancel
+    id: screen-home
+- assertVisible: 'SUDOKU'
+- assertVisible: 'Pick a level to begin.'
+- assertNotVisible:
+    id: continue-card
 - assertVisible:
-    id: screen-game
+    id: new-game-button
+
+# Stats and Settings open as pushed screens and return to Home.
 - tapOn:
-    id: tab-stats
+    id: home-stats
 - assertVisible:
     id: screen-stats
 - tapOn:
-    id: tab-settings
+    id: header-back
+- assertVisible:
+    id: screen-home
+- tapOn:
+    id: home-settings
 - assertVisible:
     id: screen-settings
 - tapOn:
-    id: tab-game
+    id: header-back
 - assertVisible:
-    id: screen-game
+    id: screen-home

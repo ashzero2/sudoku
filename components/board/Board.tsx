@@ -6,9 +6,8 @@ import { BOARD_SIZE, sees } from '@/lib/engine/grid';
 import { hintCells } from '@/lib/game/hints';
 import { useGameStore } from '@/stores/gameStore';
 import { useSettingsStore } from '@/stores/settingsStore';
-import { spacing } from '@/theme/tokens';
+import { MAX_CONTENT_WIDTH, spacing } from '@/theme/tokens';
 
-const MAX_BOARD_WIDTH = 480;
 const ROW_INDEXES = Array.from({ length: BOARD_SIZE }, (_, row) => row);
 const COL_INDEXES = ROW_INDEXES;
 
@@ -29,7 +28,7 @@ export function Board() {
   const hintedCells = hint ? hintCells(hint) : [];
 
   // Whole-pixel cells keep the grid lines crisp; the outer frame takes the remainder.
-  const available = Math.min(width - 2 * spacing.md, MAX_BOARD_WIDTH);
+  const available = Math.min(width - 2 * spacing.md, MAX_CONTENT_WIDTH);
   const cellSize = Math.floor((available - 2 * BOX_LINE) / BOARD_SIZE);
   const selectedValue = selectedCell === null ? 0 : board[selectedCell];
 

@@ -4,7 +4,17 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { useTheme } from '@/hooks/useTheme';
 import { useGameStore } from '@/stores/gameStore';
-import { MIN_TARGET, radius, spacing } from '@/theme/tokens';
+import {
+  border,
+  icon,
+  MAX_FONT_SCALE,
+  MIN_TARGET,
+  opacity,
+  radius,
+  spacing,
+  type,
+  weight,
+} from '@/theme/tokens';
 
 type IconName = ComponentProps<typeof Ionicons>['name'];
 
@@ -20,7 +30,7 @@ interface ToolButtonProps {
 function ToolButton({
   id,
   label,
-  icon,
+  icon: iconName,
   onPress,
   disabled = false,
   active = false,
@@ -38,11 +48,14 @@ function ToolButton({
       onPress={onPress}
       style={[
         styles.button,
-        { opacity: disabled ? 0.45 : 1, borderColor: active ? theme.accent : 'transparent' },
+        {
+          opacity: disabled ? opacity.disabled : 1,
+          borderColor: active ? theme.accent : 'transparent',
+        },
       ]}
     >
-      <Ionicons name={icon} size={24} color={color} />
-      <Text maxFontSizeMultiplier={1.3} style={[styles.label, { color }]}>
+      <Ionicons name={iconName} size={icon.md} color={color} />
+      <Text maxFontSizeMultiplier={MAX_FONT_SCALE} style={[styles.label, { color }]}>
         {label}
       </Text>
     </Pressable>
@@ -97,8 +110,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: spacing.xs,
-    borderWidth: 2,
+    borderWidth: border.control,
     borderRadius: radius.md,
   },
-  label: { fontSize: 12 },
+  label: { fontSize: type.micro, fontWeight: weight.semibold },
 });

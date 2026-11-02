@@ -31,3 +31,17 @@ env:
     id: resume-button
 - assertVisible:
     id: board
+
+# Leaving through the header also pauses; Continue brings the board back.
+- tapOn:
+    id: game-back
+- assertVisible:
+    id: screen-home
+- assertVisible:
+    id: continue-card
+- tapOn:
+    id: continue-card
+- assertVisible:
+    id: board
+- assertNotVisible:
+    id: pause-overlay

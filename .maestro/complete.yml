@@ -25,26 +25,28 @@ env:
 - assertVisible:
     id: completion-hints
     text: '0'
-- tapOn:
-    id: completion-close
-- assertVisible: 'No game in progress'
 
-# Closing the dialog leaves the New game sheet closed until it is asked for.
-- assertNotVisible:
-    id: new-game-sheet
+# Back to home: the finished game is gone and the hub is ready for another.
 - tapOn:
-    id: new-game-button
+    id: completion-home
 - assertVisible:
-    id: new-game-sheet
-- tapOn:
-    id: new-game-cancel
+    id: screen-home
+- assertNotVisible:
+    id: completion-modal
+- assertVisible: 'Pick a level to begin.'
+- assertNotVisible:
+    id: continue-card
 
 # The result is in the stats.
 - tapOn:
-    id: tab-stats
+    id: home-stats
 - assertVisible: 'Started: 1'
 - assertVisible: 'Solved: 1'
 - assertVisible: 'Completion rate: 100%'
 - assertVisible: 'Current streak: 1'
 - assertVisible: 'Mistakes: 1'
 - assertVisible: 'Very easy best time: [0-9]+:[0-9]{2}'
+- tapOn:
+    id: header-back
+- assertVisible:
+    id: screen-home

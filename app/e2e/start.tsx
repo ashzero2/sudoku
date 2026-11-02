@@ -23,7 +23,7 @@ export default function E2EStart() {
     if (!isValid) return;
     const level = DIFFICULTIES.find((candidate) => candidate === difficulty) ?? DEFAULT_LEVEL;
     startPuzzle(level, 'e2e', [...puzzle].map(Number));
-    router.dismissTo('/');
+    router.replace('/game');
   }, [isValid, puzzle, difficulty, startPuzzle, router]);
 
   return isValid ? null : <Redirect href="/" />;

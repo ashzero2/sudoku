@@ -6,6 +6,7 @@ import { NotesGrid } from '@/components/board/NotesGrid';
 import { useCellMotion } from '@/components/board/useCellMotion';
 import { BOARD_SIZE, BOX_SIZE, DIGITS, colOf, digitBit, rowOf } from '@/lib/engine/grid';
 import type { ThemeTokens } from '@/theme/tokens';
+import { weight } from '@/theme/tokens';
 
 export const CELL_LINE = 1;
 export const BOX_LINE = 2;
@@ -13,6 +14,7 @@ const SELECTED_RING = 2;
 const SAME_DIGIT_RING = 1;
 const HINT_RING = 2;
 const HINT_INSET = 3;
+const DIGIT_SIZE_RATIO = 0.58;
 
 interface CellProps {
   index: number;
@@ -119,8 +121,8 @@ function CellView(props: CellProps) {
               styles.digit,
               {
                 color: digitColor,
-                fontSize: Math.round(size * 0.58),
-                fontWeight: isGiven ? '700' : '500',
+                fontSize: Math.round(size * DIGIT_SIZE_RATIO),
+                fontWeight: isGiven ? weight.bold : weight.medium,
                 textDecorationLine: isConflict ? 'underline' : 'none',
               },
             ]}

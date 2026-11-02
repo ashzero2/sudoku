@@ -4,10 +4,10 @@ env:
 ---
 - launchApp:
     clearState: true
+- assertVisible:
+    id: screen-home
 - tapOn:
-    id: new-game-cancel
-- tapOn:
-    id: tab-settings
+    id: home-settings
 - assertVisible:
     id: theme-system
     selected: true
@@ -28,10 +28,10 @@ env:
 # Settings survive a restart.
 - stopApp
 - launchApp
+- assertVisible:
+    id: screen-home
 - tapOn:
-    id: new-game-cancel
-- tapOn:
-    id: tab-settings
+    id: home-settings
 - assertVisible:
     id: theme-dark
     selected: true
@@ -40,6 +40,10 @@ env:
     checked: false
 
 # With Show mistakes off, a wrong entry is not flagged.
+- tapOn:
+    id: header-back
+- assertVisible:
+    id: screen-home
 - openLink: sudoku://e2e/start?puzzle=${PUZZLE}&difficulty=very-easy
 - assertVisible:
     id: board

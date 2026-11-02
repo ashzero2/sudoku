@@ -1,0 +1,71 @@
+appId: com.cleansudoku.app
+env:
+  PUZZLE: '004000800009127500070060010000985000007000100080030090000502000100000007060000040'
+---
+# No game: Home offers New game and no Continue card.
+- launchApp:
+    clearState: true
+- assertVisible:
+    id: screen-home
+- assertVisible: 'Pick a level to begin.'
+- assertNotVisible:
+    id: continue-card
+- assertVisible:
+    id: new-game-button
+- tapOn:
+    id: new-game-button
+- assertVisible:
+    id: new-game-sheet
+- tapOn:
+    id: difficulty-medium
+- assertVisible:
+    id: board
+- assertVisible:
+    id: difficulty-label
+    text: 'Medium'
+
+# Leaving the board pauses it and Home now offers Continue.
+- tapOn:
+    id: game-back
+- assertVisible:
+    id: screen-home
+- assertVisible:
+    id: continue-card
+- assertNotVisible: 'Pick a level to begin.'
+
+# A known puzzle gives deterministic moves for the rest of the flow.
+- openLink: sudoku://e2e/start?puzzle=${PUZZLE}&difficulty=very-easy
+- assertVisible:
+    id: board
+- tapOn:
+    id: cell-0
+- tapOn:
+    id: digit-6
+- assertVisible: 'Row 1, column 1, entered 6'
+- tapOn:
+    id: game-back
+- assertVisible:
+    id: continue-card
+
+# Starting another level while a game has progress asks first.
+- tapOn:
+    id: new-game-button
+- assertVisible:
+    id: new-game-sheet
+- tapOn:
+    id: difficulty-hard
+- assertVisible: 'Start a new game?'
+- tapOn: 'Keep playing'
+- assertVisible:
+    id: screen-home
+- assertVisible:
+    id: continue-card
+
+# Continue returns to the same board and entry.
+- tapOn:
+    id: continue-card
+- assertVisible:
+    id: board
+- assertNotVisible:
+    id: pause-overlay
+- assertVisible: 'Row 1, column 1, entered 6'

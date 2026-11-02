@@ -3,10 +3,10 @@ appId: com.cleansudoku.app
 - launchApp:
     clearState: true
 
-# Wait for the app to finish loading (it opens the New game sheet); a link sent
-# earlier arrives before the app is listening and is lost.
+# Wait for the home screen to finish loading; a link sent earlier arrives
+# before the app is listening and is lost.
 - assertVisible:
-    id: new-game-sheet
+    id: screen-home
 - openLink: sudoku://e2e/start?puzzle=${PUZZLE}&difficulty=very-easy
 - assertVisible:
     id: board

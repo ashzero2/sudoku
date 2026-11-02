@@ -1,16 +1,27 @@
+import type { StyleProp, ViewStyle } from 'react-native';
 import { Pressable, StyleSheet, Text } from 'react-native';
 
 import { useTheme } from '@/hooks/useTheme';
-import { MIN_TARGET, radius, spacing } from '@/theme/tokens';
+import {
+  border,
+  MAX_FONT_SCALE,
+  MIN_TARGET,
+  opacity,
+  radius,
+  spacing,
+  type,
+  weight,
+} from '@/theme/tokens';
 
 interface ButtonProps {
   label: string;
   onPress: () => void;
   testID: string;
   variant?: 'primary' | 'secondary';
+  style?: StyleProp<ViewStyle>;
 }
 
-export function Button({ label, onPress, testID, variant = 'secondary' }: ButtonProps) {
+export function Button({ label, onPress, testID, variant = 'secondary', style }: ButtonProps) {
   const theme = useTheme();
   const isPrimary = variant === 'primary';
 
@@ -25,12 +36,13 @@ export function Button({ label, onPress, testID, variant = 'secondary' }: Button
         {
           backgroundColor: isPrimary ? theme.accent : theme.surface,
           borderColor: isPrimary ? theme.accent : theme.line,
-          opacity: pressed ? 0.8 : 1,
+          opacity: pressed ? opacity.pressed : 1,
         },
+        style,
       ]}
     >
       <Text
-        maxFontSizeMultiplier={1.3}
+        maxFontSizeMultiplier={MAX_FONT_SCALE}
         style={[styles.label, { color: isPrimary ? theme.onAccent : theme.text }]}
       >
         {label}
@@ -44,9 +56,9 @@ const styles = StyleSheet.create({
     minHeight: MIN_TARGET,
     paddingHorizontal: spacing.md,
     borderRadius: radius.md,
-    borderWidth: 1,
+    borderWidth: border.hairline,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  label: { fontSize: 16, fontWeight: '600' },
+  label: { fontSize: type.body, fontWeight: weight.semibold },
 });

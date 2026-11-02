@@ -9,10 +9,16 @@ interface NotesGridProps {
 }
 
 const NOTES_PER_ROW = 3;
+const NOTE_SIZE_RATIO = 0.24;
 
 export function NotesGrid({ mask, size, color }: NotesGridProps) {
   const noteSize = Math.floor(size / NOTES_PER_ROW);
-  const textStyle = { width: noteSize, height: noteSize, fontSize: Math.round(size * 0.24), color };
+  const textStyle = {
+    width: noteSize,
+    height: noteSize,
+    fontSize: Math.round(size * NOTE_SIZE_RATIO),
+    color,
+  };
 
   return (
     <View style={[styles.grid, { width: noteSize * NOTES_PER_ROW }]} pointerEvents="none">

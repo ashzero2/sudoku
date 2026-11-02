@@ -3,7 +3,15 @@ import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-na
 import { useTheme } from '@/hooks/useTheme';
 import { BOARD_SIZE, DIGITS } from '@/lib/engine/grid';
 import { useGameStore } from '@/stores/gameStore';
-import { MAX_CONTENT_WIDTH, MIN_TARGET, radius, spacing, type, weight } from '@/theme/tokens';
+import {
+  MAX_CONTENT_WIDTH,
+  MAX_FONT_SCALE,
+  MIN_TARGET,
+  radius,
+  spacing,
+  type,
+  weight,
+} from '@/theme/tokens';
 
 const NARROW_COLUMNS = 5;
 const BUTTON_HEIGHT = 52;
@@ -21,25 +29,33 @@ export function NumberPad() {
   const fillDigit = useGameStore((state) => state.fillDigit);
 
   const rowWidth = Math.min(width - 2 * spacing.md, MAX_CONTENT_WIDTH);
-  // One row when every button can stay at least MIN_TARGET wide, otherwise two.
-  const columns = rowWidth >= MIN_TARGET * DIGITS.length ? DIGITS.length : NARROW_COLUMNS;
-  const buttonWidth = Math.floor(rowWidth / columns);
   const counts = countPlaced(board);
+  const visibleDigits = DIGITS.filter((digit) => counts[digit] < BOARD_SIZE);
+  // One row when every visible button can stay at least MIN_TARGET wide, otherwise two.
+  const columns =
+    visibleDigits.length === 0
+      ? 0
+      : rowWidth >= MIN_TARGET * visibleDigits.length
+        ? visibleDigits.length
+        : NARROW_COLUMNS;
+  const buttonWidth = columns === 0 ? 0 : Math.floor(rowWidth / columns);
   const rows =
-    DIGITS.length > columns ? [DIGITS.slice(0, columns), DIGITS.slice(columns)] : [DIGITS];
+    visibleDigits.length > columns
+      ? [visibleDigits.slice(0, columns), visibleDigits.slice(columns)]
+      : [visibleDigits];
 
   return (
     <View style={styles.pad}>
       {rows.map((digits, rowIndex) => (
         <View key={rowIndex} style={styles.row}>
           {digits.map((digit) => {
-            const isComplete = counts[digit] >= BOARD_SIZE;
+            const remaining = BOARD_SIZE - counts[digit];
             return (
               <Pressable
                 key={digit}
                 testID={`digit-${digit}`}
                 accessibilityRole="button"
-                accessibilityLabel={isComplete ? `${digit}, all placed` : `${digit}`}
+                accessibilityLabel={`${digit}, ${remaining} remaining`}
                 onPress={() => fillDigit(digit)}
                 style={({ pressed }) => [
                   styles.button,
@@ -49,12 +65,17 @@ export function NumberPad() {
                   },
                 ]}
               >
-                <Text
-                  allowFontScaling={false}
-                  style={[styles.digit, { color: isComplete ? theme.textMuted : theme.text }]}
-                >
-                  {digit}
-                </Text>
+                <View style={styles.label}>
+                  <Text allowFontScaling={false} style={[styles.digit, { color: theme.text }]}>
+                    {digit}
+                  </Text>
+                  <Text
+                    maxFontSizeMultiplier={MAX_FONT_SCALE}
+                    style={[styles.remaining, { color: theme.textMuted }]}
+                  >
+                    {remaining}
+                  </Text>
+                </View>
               </Pressable>
             );
           })}
@@ -73,9 +94,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  label: { alignItems: 'center', gap: spacing.xxs },
   digit: {
     fontSize: type.digit,
     fontWeight: weight.medium,
     fontVariant: ['tabular-nums'],
   },
+  remaining: { fontSize: type.micro, fontWeight: weight.medium, fontVariant: ['tabular-nums'] },
 });

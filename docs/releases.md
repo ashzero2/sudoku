@@ -2,6 +2,8 @@
 
 The Android release workflow runs when a tag is pushed to GitHub. It builds APKs locally on GitHub-hosted runners using the pinned EAS CLI and the existing Expo-managed Android signing key. It publishes a GitHub Release only after all five APKs build and pass signature and architecture checks.
 
+Each job downloads Gradle 9.4.1 with retries, falling back to Princeton's public MacPorts mirror if the official download is unavailable. The archive must match Gradle's published SHA-256 checksum before it is used.
+
 ## Setup
 
 1. Create an Expo access token for an account that can access the project's Android signing credentials.

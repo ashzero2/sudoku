@@ -19,6 +19,10 @@
       "distribution": "internal",
       "android": { "buildType": "apk" }
     },
+    "play-beta": {
+      "env": { "PLAY_STORE_BUILD": "1" },
+      "android": { "buildType": "app-bundle" }
+    },
     "preview-arm64": {
       "extends": "preview",
       "android": {

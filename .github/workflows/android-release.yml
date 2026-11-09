@@ -1,0 +1,107 @@
+name: Android release
+
+on:
+  push:
+    tags:
+      - '**'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build ${{ matrix.name }} APK
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: universal
+            script: build:preview
+          - name: arm64-v8a
+            script: build:preview-arm64
+          - name: armeabi-v7a
+            script: build:preview-armv7
+          - name: x86
+            script: build:preview-x86
+          - name: x86_64
+            script: build:preview-x86-64
+    steps:
+      - uses: actions/checkout@v4.2.2
+      - uses: actions/setup-node@v4.4.0
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - uses: actions/setup-java@v4.7.1
+        with:
+          distribution: temurin
+          java-version: '17.0.18+8'
+      - name: Install Android SDK components
+        run: |
+          sdkmanager 'platforms;android-37' 'build-tools;37.0.0' 'ndk;27.1.12297006'
+      - name: Install dependencies
+        run: npm ci
+      - name: Build APK locally
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          BUILD_SCRIPT: ${{ matrix.script }}
+        run: |
+          if [ -z "$EXPO_TOKEN" ]; then
+            echo 'Set the EXPO_TOKEN repository secret to access the Expo project and signing credentials.' >&2
+            exit 1
+          fi
+          npm run "$BUILD_SCRIPT"
+      - name: Name APK
+        env:
+          APK_ARCH: ${{ matrix.name }}
+        run: |
+          shopt -s nullglob
+          apks=(build/*.apk)
+          if [ "${#apks[@]}" -ne 1 ]; then
+            echo "Expected one APK, found ${#apks[@]}" >&2
+            exit 1
+          fi
+          "$ANDROID_HOME/build-tools/37.0.0/apksigner" verify "${apks[0]}"
+          actual_arches=$(unzip -Z1 "${apks[0]}" | awk -F/ '$1 == "lib" && $3 ~ /\.so$/ {print $2}' | sort -u | paste -sd, -)
+          expected_arches=$APK_ARCH
+          if [ "$APK_ARCH" = universal ]; then
+            expected_arches=arm64-v8a,armeabi-v7a,x86,x86_64
+          fi
+          if [ "$actual_arches" != "$expected_arches" ]; then
+            echo "Expected native architectures $expected_arches, found $actual_arches" >&2
+            exit 1
+          fi
+          mv "${apks[0]}" "build/cleandoku-${APK_ARCH}.apk"
+      - uses: actions/upload-artifact@v4.6.2
+        with:
+          name: apk-${{ matrix.name }}
+          path: build/cleandoku-${{ matrix.name }}.apk
+          if-no-files-found: error
+          retention-days: 7
+
+  release:
+    name: Publish GitHub release
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4.3.0
+        with:
+          pattern: apk-*
+          path: apks
+          merge-multiple: true
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          shopt -s nullglob
+          apks=(apks/*.apk)
+          if [ "${#apks[@]}" -ne 5 ]; then
+            echo "Expected five APKs, found ${#apks[@]}" >&2
+            exit 1
+          fi
+          gh release create "$RELEASE_TAG" "${apks[@]}" --verify-tag --generate-notes --title "$RELEASE_TAG"

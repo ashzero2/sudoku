@@ -5,16 +5,15 @@
     "version": "1.0.0",
     "scheme": "sudoku",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/cleandoku-launcher.png",
     "userInterfaceStyle": "automatic",
     "android": {
       "package": "com.cleansudoku.app",
-      "versionCode": 2,
+      "versionCode": 3,
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
+        "backgroundColor": "#E8F1F9",
+        "foregroundImage": "./assets/cleandoku-adaptive-foreground.png",
+        "monochromeImage": "./assets/cleandoku-adaptive-monochrome.png"
       },
       "predictiveBackGestureEnabled": false
     },

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Cleandoku feature graphic</title>
+    <style>
+      * { box-sizing: border-box; }
+      html, body { margin: 0; width: 1024px; height: 500px; overflow: hidden; }
+      body { background: #e8f1f9; color: #263b50; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+      .copy { position: absolute; left: 73px; top: 130px; width: 465px; }
+      .eyebrow { color: #326eac; font-size: 15px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; }
+      h1 { font-size: 62px; font-weight: 700; letter-spacing: -.045em; margin: 18px 0 8px; line-height: 1; }
+      p { font-size: 23px; margin: 0; line-height: 1.4; color: #52677a; }
+      .line { width: 58px; height: 4px; background: #4a90e2; margin-top: 31px; }
+      .board { position: absolute; right: 70px; top: 51px; display: grid; grid-template-columns: repeat(9, 44px); grid-template-rows: repeat(9, 44px); border: 2px solid #263b50; background: #fff; }
+      .cell { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-right: 1px solid #c5cbd0; border-bottom: 1px solid #c5cbd0; color: #0d5db8; font-size: 22px; font-weight: 600; }
+      .cell:nth-child(3n) { border-right: 2px solid #263b50; }
+      .cell:nth-child(9n) { border-right: 0; }
+      .cell:nth-child(n+19):nth-child(-n+27), .cell:nth-child(n+46):nth-child(-n+54) { border-bottom: 2px solid #263b50; }
+      .cell:nth-child(n+73) { border-bottom: 0; }
+      .cell.selected { background: #d4e7fa; }
+      .cell.entered { color: #37474f; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="copy"><div class="eyebrow">A little space to think</div><h1>Cleandoku</h1><p>Sudoku, at your own pace.</p><div class="line"></div></div>
+      <div class="board" id="board" aria-hidden="true"></div>
+    </main>
+    <script>
+      const puzzle = '004000800009127500070060010000985000007000100080030090000502000100000007060000040';
+      const board = document.getElementById('board');
+      for (let i = 0; i < puzzle.length; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell' + (i === 0 ? ' selected entered' : '');
+        cell.textContent = i === 0 ? '6' : puzzle[i] === '0' ? '' : puzzle[i];
+        board.appendChild(cell);
+      }
+    </script>
+  </body>
+</html>

@@ -19,7 +19,9 @@ interface NewGameSheetProps {
 export function NewGameSheet({ visible, onClose, onSelect }: NewGameSheetProps) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
-  const hasProgress = useGameStore((state) => (state.game?.history.length ?? 0) > 0);
+  const hasProgress = useGameStore(
+    (state) => (state.game?.history.length ?? 0) > 0 || (state.game?.redo.length ?? 0) > 0,
+  );
   const bestTimes = useStatsStore((state) => state.stats.bestTimesMs);
 
   function choose(difficulty: Difficulty): void {

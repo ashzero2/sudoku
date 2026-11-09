@@ -30,15 +30,16 @@ export function NumberPad() {
 
   const rowWidth = Math.min(width - 2 * spacing.md, MAX_CONTENT_WIDTH);
   const counts = countPlaced(board);
-  const visibleDigits = DIGITS.filter((digit) => counts[digit] < BOARD_SIZE);
+  const visibleDigits = DIGITS;
   // One row when every visible button can stay at least MIN_TARGET wide, otherwise two.
   const columns =
     visibleDigits.length === 0
       ? 0
-      : rowWidth >= MIN_TARGET * visibleDigits.length
+      : rowWidth >= MIN_TARGET * visibleDigits.length + spacing.xs * (visibleDigits.length - 1)
         ? visibleDigits.length
         : NARROW_COLUMNS;
-  const buttonWidth = columns === 0 ? 0 : Math.floor(rowWidth / columns);
+  const buttonWidth =
+    columns === 0 ? 0 : Math.floor((rowWidth - spacing.xs * (columns - 1)) / columns);
   const rows =
     visibleDigits.length > columns
       ? [visibleDigits.slice(0, columns), visibleDigits.slice(columns)]
@@ -49,18 +50,18 @@ export function NumberPad() {
       {rows.map((digits, rowIndex) => (
         <View key={rowIndex} style={styles.row}>
           {digits.map((digit) => {
-            const remaining = BOARD_SIZE - counts[digit];
+            const remaining = Math.max(0, BOARD_SIZE - counts[digit]);
             return (
               <Pressable
                 key={digit}
                 testID={`digit-${digit}`}
                 accessibilityRole="button"
-                accessibilityLabel={`${digit}, ${remaining} remaining`}
+                accessibilityLabel={`${digit}, ${remaining} remaining based on entries`}
                 onPress={() => fillDigit(digit)}
                 style={({ pressed }) => [
                   styles.button,
                   {
-                    width: buttonWidth - spacing.xs,
+                    width: buttonWidth,
                     backgroundColor: pressed ? theme.selected : theme.surface,
                   },
                 ]}

@@ -1,0 +1,20 @@
+appId: com.cleansudoku.app
+env:
+  PUZZLE: '014359872839127564572468913341985726957246138286731495493572681128694357765813240'
+---
+- runFlow:
+    file: shared/start-puzzle.yml
+    env:
+      PUZZLE: ${PUZZLE}
+- tapOn:
+    id: cell-0
+- tapOn:
+    id: digit-9
+- assertVisible: 'Row 1, column 1, incorrect 9'
+- assertVisible:
+    id: digit-9
+- tapOn:
+    id: cell-80
+- tapOn:
+    id: digit-9
+- assertVisible: 'Row 9, column 9, entered 9'

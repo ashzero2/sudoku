@@ -1,0 +1,27 @@
+appId: com.cleansudoku.app
+env:
+  PUZZLE: '004000800009127500070060010000985000007000100080030090000502000100000007060000040'
+---
+- runFlow:
+    file: shared/start-puzzle.yml
+    env:
+      PUZZLE: ${PUZZLE}
+- tapOn:
+    id: cell-0
+- tapOn:
+    id: digit-6
+- tapOn:
+    id: tool-undo
+- tapOn:
+    id: game-back
+- tapOn:
+    id: new-game-button
+- tapOn:
+    id: difficulty-hard
+- assertVisible: 'Start a new game?'
+- tapOn: 'Keep playing'
+- tapOn:
+    id: continue-card
+- tapOn:
+    id: tool-redo
+- assertVisible: 'Row 1, column 1, entered 6'

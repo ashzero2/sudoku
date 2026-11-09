@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Clean Sudoku",
+    "name": "Cleandoku",
     "slug": "clean-sudoku",
     "version": "1.0.0",
     "scheme": "sudoku",
@@ -9,6 +9,7 @@
     "userInterfaceStyle": "automatic",
     "android": {
       "package": "com.cleansudoku.app",
+      "versionCode": 2,
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/android-icon-foreground.png",

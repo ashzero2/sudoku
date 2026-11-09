@@ -49,7 +49,7 @@ export default function HomeScreen() {
               maxFontSizeMultiplier={MAX_FONT_SCALE}
               style={[styles.brand, { color: theme.text }]}
             >
-              CLEAN SUDOKU
+              CLEANDOKU
             </Text>
             <Text
               testID="home-streak"
@@ -67,7 +67,7 @@ export default function HomeScreen() {
               maxFontSizeMultiplier={MAX_FONT_SCALE}
               style={[styles.mark, { color: theme.text }]}
             >
-              SUDOKU
+              CLEANDOKU
             </Text>
           </View>
 

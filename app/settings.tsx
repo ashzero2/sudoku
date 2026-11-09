@@ -129,7 +129,7 @@ export default function SettingsScreen() {
         maxFontSizeMultiplier={MAX_FONT_SCALE}
         style={[styles.about, { color: theme.text }]}
       >
-        {`Clean Sudoku ${Constants.expoConfig?.version ?? ''}`}
+        {`Cleandoku ${Constants.expoConfig?.version ?? ''}`}
       </Text>
       <Text
         maxFontSizeMultiplier={MAX_FONT_SCALE}
@@ -137,6 +137,20 @@ export default function SettingsScreen() {
       >
         Puzzles come from the Sudoku Exchange puzzle bank, which is in the public domain.
       </Text>
+      <Pressable
+        testID="privacy-policy"
+        accessibilityRole="button"
+        accessibilityLabel="Privacy policy"
+        onPress={() => router.push('/privacy')}
+        style={styles.privacy}
+      >
+        <Text
+          maxFontSizeMultiplier={MAX_FONT_SCALE}
+          style={[styles.toggleLabel, { color: theme.accent }]}
+        >
+          Privacy policy
+        </Text>
+      </Pressable>
     </Screen>
   );
 }
@@ -164,4 +178,5 @@ const styles = StyleSheet.create({
   toggleLabel: { fontSize: type.body },
   hint: { fontSize: type.small },
   about: { fontSize: type.body, marginBottom: spacing.xs },
+  privacy: { minHeight: MIN_TARGET, justifyContent: 'center' },
 });
